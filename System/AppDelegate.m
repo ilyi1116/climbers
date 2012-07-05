@@ -10,8 +10,11 @@
 
 #import "AppDelegate.h"
 #import "GameConfig.h"
-#import "Intro.h"
+#import "../Game/Intro.h"
+#if defined (__STELLA_VERSION_MAX_ALLOWED) /* VIEWCONTROLLER */
+#else
 #import "RootViewController.h"
+#endif
 
 @implementation AppDelegate
 
@@ -51,9 +54,12 @@
 	
 	CCDirector *director = [CCDirector sharedDirector];
 	
+#if defined (__STELLA_VERSION_MAX_ALLOWED) /* VIEWCONTROLLER */
+#else
 	// Init the View Controller
 	viewController = [[RootViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.wantsFullScreenLayout = YES;
+#endif
 	
 	//
 	// Create the EAGLView manually
@@ -82,7 +88,7 @@
 	// By default, this template only supports Landscape orientations.
 	// Edit the RootViewController.m file to edit the supported orientations.
 	//
-#if GAME_AUTOROTATION == kGameAutorotationUIViewController
+#if GAME_AUTOROTATION == kGameAutorotationUIViewController || defined (__STELLA_VERSION_MAX_ALLOWED) /* VIEWCONTROLLER */
 	[director setDeviceOrientation:kCCDeviceOrientationPortrait];
 #else
 	[director setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
@@ -92,11 +98,15 @@
 	[director setDisplayFPS:NO];
 	[director setDepthTest:NO];
 	
+#if defined (__STELLA_VERSION_MAX_ALLOWED) /* VIEWCONTROLLER */
+    [window addSubview: glView];
+#else
 	// make the OpenGLView a child of the view controller
 	[viewController setView:glView];
 	
 	// make the View Controller a child of the main window
 	[window addSubview: viewController.view];
+#endif
 	
 	[window makeKeyAndVisible];
 	
@@ -139,7 +149,10 @@
 	
 	[[director openGLView] removeFromSuperview];
 	
+#if defined (__STELLA_VERSION_MAX_ALLOWED) /* VIEWCONTROLLER */
+#else
 	[viewController release];
+#endif
 	
 	[window release];
 	

@@ -11,6 +11,8 @@
 // If you want to support iAd, use this class as the controller of your iAd
 //
 
+#if defined (__STELLA_VERSION_MAX_ALLOWED)
+#else
 #import "cocos2d.h"
 
 #import "RootViewController.h"
@@ -151,3 +153,4 @@
 
 @end
 
+#endif
