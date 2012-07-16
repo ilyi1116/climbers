@@ -154,13 +154,13 @@ enum {
 		}
 		[self resetLevel];
 		
-		[[SimpleAudioEngine sharedEngine] preloadEffect:@"levelCompleted.caf"];
-		[[SimpleAudioEngine sharedEngine] preloadEffect:@"levelFailed.caf"];
-		[[SimpleAudioEngine sharedEngine] preloadEffect:@"click.caf"];
-		[[SimpleAudioEngine sharedEngine] preloadEffect:@"grab.caf"];
-		[[SimpleAudioEngine sharedEngine] preloadEffect:@"collectStar.mp3"];
-		[[SimpleAudioEngine sharedEngine] preloadEffect:@"dropRock.mp3"];
 
+		[[SimpleAudioEngine sharedEngine] preloadEffect:@"levelCompleted.wav"];
+		[[SimpleAudioEngine sharedEngine] preloadEffect:@"levelFailed.wav"];
+		[[SimpleAudioEngine sharedEngine] preloadEffect:@"click.wav"];
+		[[SimpleAudioEngine sharedEngine] preloadEffect:@"grab.wav"];
+		[[SimpleAudioEngine sharedEngine] preloadEffect:@"collectStar.wav"];
+		[[SimpleAudioEngine sharedEngine] preloadEffect:@"dropRock.wav"];
 		[[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
 		[[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"game.mp3" loop:YES];
 		
@@ -337,7 +337,7 @@ enum {
 
 - (void)levelFailed {
 	NSLog(@"levelFailed");
-	[[SimpleAudioEngine sharedEngine] playEffect:@"levelFailed.caf"];
+	[[SimpleAudioEngine sharedEngine] playEffect:@"levelFailed.wav"];
 	gameInProgress = NO;
 	if(rockTimer) {
 		[rockTimer invalidate];
@@ -358,7 +358,7 @@ enum {
 
 - (void)levelCompleted {
 	NSLog(@"levelCompleted");
-	[[SimpleAudioEngine sharedEngine] playEffect:@"levelCompleted.caf"];
+	[[SimpleAudioEngine sharedEngine] playEffect:@"levelCompleted.wav"];
 	gameInProgress = NO;
 	if(rockTimer) {
 		[rockTimer invalidate];
@@ -508,7 +508,7 @@ enum {
 
 	if(!gameInProgress) {
 		[self resetLevel];
-		[[SimpleAudioEngine sharedEngine] playEffect:@"grab.caf"];
+		[[SimpleAudioEngine sharedEngine] playEffect:@"grab.wav"];
 		return;
 	}
 
@@ -524,7 +524,7 @@ enum {
 			dragInProgress = YES;
 			dragOffset = ccpSub(dragHero.position, location);
 			dragHero.state = kHeroStateDrag;
-			[[SimpleAudioEngine sharedEngine] playEffect:@"click.caf"];
+			[[SimpleAudioEngine sharedEngine] playEffect:@"click.wav"];
 		}
 		return;
 	}
@@ -535,7 +535,7 @@ enum {
 			dragInProgress = YES;
 			dragOffset = ccpSub(dragHero.position, location);
 			dragHero.state = kHeroStateDrag;
-			[[SimpleAudioEngine sharedEngine] playEffect:@"click.caf"];
+			[[SimpleAudioEngine sharedEngine] playEffect:@"click.wav"];
 		}
 		return;
 	}
@@ -557,7 +557,7 @@ enum {
 	if(dragInProgress) {
 		dragInProgress = NO;
 		dragHero.state = kHeroStateFall;
-		[[SimpleAudioEngine sharedEngine] playEffect:@"grab.caf"];
+		[[SimpleAudioEngine sharedEngine] playEffect:@"grab.wav"];
 		if(snapFeedback.opacity > 0) {
 			[snapFeedback runAction:[CCFadeOut actionWithDuration:0.25f]];
 		}
@@ -642,7 +642,7 @@ enum {
 	ps.lifeVar = 1.0f;
 	ps.totalParticles = 60.0f;
 	ps.autoRemoveOnFinish = YES;
-	[[SimpleAudioEngine sharedEngine] playEffect:@"collectStar.mp3"];
+	[[SimpleAudioEngine sharedEngine] playEffect:@"collectStar.wav"];
 }
 
 - (void)updateCamera {
@@ -684,7 +684,7 @@ enum {
 		rock.falling = YES;
 		[rock runAction:[CCFadeIn actionWithDuration:0.5f]];
 //	}
-	[[SimpleAudioEngine sharedEngine] playEffect:@"dropRock.mp3"];
+	[[SimpleAudioEngine sharedEngine] playEffect:@"dropRock.wav"];
 	[self scheduleRockAlert];
 }
 

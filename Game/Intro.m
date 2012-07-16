@@ -127,8 +127,8 @@
 		[label runAction:[CCSequence actions:a1,a2,nil]];
 		[self addChild:label];
 
-		[[SimpleAudioEngine sharedEngine] preloadEffect:@"click.caf"];
-		[[SimpleAudioEngine sharedEngine] preloadEffect:@"grab.caf"];
+		[[SimpleAudioEngine sharedEngine] preloadEffect:@"click.wav"];
+		[[SimpleAudioEngine sharedEngine] preloadEffect:@"grab.wav"];
 		
 		[[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
 		[[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"intro.mp3"];
@@ -162,21 +162,21 @@
 	rect = CGRectMake(sw/2-64, sh/2-64, 128, 128);
 	if(CGRectContainsPoint(rect, location)) {
 		playButton.scale = 0.95f;
-		[[SimpleAudioEngine sharedEngine] playEffect:@"click.caf"];
+		[[SimpleAudioEngine sharedEngine] playEffect:@"click.wav"];
 	}
 
 	// more games button
 	rect = CGRectMake(sw/4-32, sh/2-32, 64, 64);
 	if(CGRectContainsPoint(rect, location)) {
 		moreGamesButton.scale = 0.95f;
-		[[SimpleAudioEngine sharedEngine] playEffect:@"click.caf"];
+		[[SimpleAudioEngine sharedEngine] playEffect:@"click.wav"];
 	}
 
 	// game sources button
 	rect = CGRectMake(sw*3/4-32, sh/2-32, 64, 64);
 	if(CGRectContainsPoint(rect, location)) {
 		gameSourcesButton.scale = 0.95f;
-		[[SimpleAudioEngine sharedEngine] playEffect:@"click.caf"];
+		[[SimpleAudioEngine sharedEngine] playEffect:@"click.wav"];
 	}
 }
 
