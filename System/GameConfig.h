@@ -42,16 +42,11 @@
 #endif
 
 // iOS or Mac
-#if defined (__IPHONE_OS_VERSION_MAX_ALLOWED) /* GENERIC */
+#ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
 #define IOS 1
 #define IS_IPAD (UI_USER_INTERFACE_IDIOM()==UIUserInterfaceIdiomPad)
 #define IS_IPHONE !IS_IPAD
 #define IS_MAC NO
-#elif defined (__STELLA_VERSION_MAX_ALLOWED) /* GENERIC */
-#define IOS         1
-#define IS_IPAD     0
-#define IS_IPHONE   !IS_IPAD
-#define IS_MAC      NO
 #else
 #define MAC 1
 #define IS_IPAD NO

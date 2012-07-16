@@ -8,13 +8,13 @@
 
 #import "Game.h"
 #import "Hero.h"
-#import "../VerletRope/VRope.h"
+#import "VRope.h"
 #import "Grab.h"
 #import "Star.h"
 #import "Rock.h"
 #import "Intro.h"
 #import "SimpleAudioEngine.h"
-#import "../System/GameConfig.h"
+#import "GameConfig.h"
 #ifdef MAC
 #import "CDXMacOSXSupport.h"
 #endif
@@ -154,13 +154,13 @@ enum {
 		}
 		[self resetLevel];
 		
+		[[SimpleAudioEngine sharedEngine] preloadEffect:@"levelCompleted.caf"];
+		[[SimpleAudioEngine sharedEngine] preloadEffect:@"levelFailed.caf"];
+		[[SimpleAudioEngine sharedEngine] preloadEffect:@"click.caf"];
+		[[SimpleAudioEngine sharedEngine] preloadEffect:@"grab.caf"];
+		[[SimpleAudioEngine sharedEngine] preloadEffect:@"collectStar.mp3"];
+		[[SimpleAudioEngine sharedEngine] preloadEffect:@"dropRock.mp3"];
 
-		[[SimpleAudioEngine sharedEngine] preloadEffect:@"levelCompleted.wav"];
-		[[SimpleAudioEngine sharedEngine] preloadEffect:@"levelFailed.wav"];
-		[[SimpleAudioEngine sharedEngine] preloadEffect:@"click.wav"];
-		[[SimpleAudioEngine sharedEngine] preloadEffect:@"grab.wav"];
-		[[SimpleAudioEngine sharedEngine] preloadEffect:@"collectStar.wav"];
-		[[SimpleAudioEngine sharedEngine] preloadEffect:@"dropRock.wav"];
 		[[SimpleAudioEngine sharedEngine] stopBackgroundMusic];
 		[[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"game.mp3" loop:YES];
 		
@@ -337,7 +337,7 @@ enum {
 
 - (void)levelFailed {
 	NSLog(@"levelFailed");
-	[[SimpleAudioEngine sharedEngine] playEffect:@"levelFailed.wav"];
+	[[SimpleAudioEngine sharedEngine] playEffect:@"levelFailed.caf"];
 	gameInProgress = NO;
 	if(rockTimer) {
 		[rockTimer invalidate];
@@ -358,7 +358,7 @@ enum {
 
 - (void)levelCompleted {
 	NSLog(@"levelCompleted");
-	[[SimpleAudioEngine sharedEngine] playEffect:@"levelCompleted.wav"];
+	[[SimpleAudioEngine sharedEngine] playEffect:@"levelCompleted.caf"];
 	gameInProgress = NO;
 	if(rockTimer) {
 		[rockTimer invalidate];
@@ -508,7 +508,7 @@ enum {
 
 	if(!gameInProgress) {
 		[self resetLevel];
-		[[SimpleAudioEngine sharedEngine] playEffect:@"grab.wav"];
+		[[SimpleAudioEngine sharedEngine] playEffect:@"grab.caf"];
 		return;
 	}
 
@@ -524,7 +524,7 @@ enum {
 			dragInProgress = YES;
 			dragOffset = ccpSub(dragHero.position, location);
 			dragHero.state = kHeroStateDrag;
-			[[SimpleAudioEngine sharedEngine] playEffect:@"click.wav"];
+			[[SimpleAudioEngine sharedEngine] playEffect:@"click.caf"];
 		}
 		return;
 	}
@@ -535,7 +535,7 @@ enum {
 			dragInProgress = YES;
 			dragOffset = ccpSub(dragHero.position, location);
 			dragHero.state = kHeroStateDrag;
-			[[SimpleAudioEngine sharedEngine] playEffect:@"click.wav"];
+			[[SimpleAudioEngine sharedEngine] playEffect:@"click.caf"];
 		}
 		return;
 	}
@@ -557,7 +557,7 @@ enum {
 	if(dragInProgress) {
 		dragInProgress = NO;
 		dragHero.state = kHeroStateFall;
-		[[SimpleAudioEngine sharedEngine] playEffect:@"grab.wav"];
+		[[SimpleAudioEngine sharedEngine] playEffect:@"grab.caf"];
 		if(snapFeedback.opacity > 0) {
 			[snapFeedback runAction:[CCFadeOut actionWithDuration:0.25f]];
 		}
@@ -642,7 +642,7 @@ enum {
 	ps.lifeVar = 1.0f;
 	ps.totalParticles = 60.0f;
 	ps.autoRemoveOnFinish = YES;
-	[[SimpleAudioEngine sharedEngine] playEffect:@"collectStar.wav"];
+	[[SimpleAudioEngine sharedEngine] playEffect:@"collectStar.mp3"];
 }
 
 - (void)updateCamera {
@@ -661,11 +661,7 @@ enum {
 }
 
 - (void)scheduleRockAlert {
-#if defined (__STELLA_VERSION_MAX_ALLOWED) /* ARC4RANDOM */
-	float delay = (float)(rand()%100)/100.0f*7.0f+3.0f; // 3-10 seconds
-#else
 	float delay = (float)(arc4random()%100)/100.0f*7.0f+3.0f; // 3-10 seconds
-#endif
 	rockTimer = [NSTimer scheduledTimerWithTimeInterval:delay target:self selector:@selector(showRockAlert) userInfo:nil repeats:NO];
 }
 
@@ -674,11 +670,7 @@ enum {
 	if(!gameInProgress) return;
 	if(-self.position.y >= levelHeight-sh) return;
 	float padding = sw*128/768;
-#if defined (__STELLA_VERSION_MAX_ALLOWED) /* ARC4RANDOM */
-	float x = (float)(rand()%(int)(sw-padding*2))+padding;
-#else
 	float x = (float)(arc4random()%(int)(sw-padding*2))+padding;
-#endif
 	rockAlert.position = ccp(x, sh*31/32-self.position.y);
 	id a1 = [CCFadeIn actionWithDuration:0.5f];
 	id a2 = [CCFadeOut actionWithDuration:0.5f];
@@ -692,7 +684,7 @@ enum {
 		rock.falling = YES;
 		[rock runAction:[CCFadeIn actionWithDuration:0.5f]];
 //	}
-	[[SimpleAudioEngine sharedEngine] playEffect:@"dropRock.wav"];
+	[[SimpleAudioEngine sharedEngine] playEffect:@"dropRock.mp3"];
 	[self scheduleRockAlert];
 }
 
@@ -756,17 +748,10 @@ enum {
 
 - (void)showPopupMenu {
 	gameInProgress = NO;
-#if defined (__STELLA_VERSION_MAX_ALLOWED) /* ALERTVIEW */
-    [[SimpleAudioEngine sharedEngine] pauseBackgroundMusic];
-#else
-    [self alertView: nil clickedButtonAtIndex: 1];
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Game Paused" message:nil delegate:self cancelButtonTitle:@"Continue" otherButtonTitles:@"Main Menu", nil];
 	[alert show];
 	[alert release];
-
 	[[SimpleAudioEngine sharedEngine] pauseBackgroundMusic];
-
-#endif
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
