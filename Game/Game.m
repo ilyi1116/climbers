@@ -8,13 +8,13 @@
 
 #import "Game.h"
 #import "Hero.h"
-#import "VRope.h"
+#import "../VerletRope/VRope.h"
 #import "Grab.h"
 #import "Star.h"
 #import "Rock.h"
 #import "Intro.h"
 #import "SimpleAudioEngine.h"
-#import "GameConfig.h"
+#import "../System/GameConfig.h"
 #ifdef MAC
 #import "CDXMacOSXSupport.h"
 #endif

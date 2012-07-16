@@ -9,7 +9,7 @@
 #import "Intro.h"
 #import "Game.h"
 #import "SimpleAudioEngine.h"
-#import "GameConfig.h"
+#import "../System/GameConfig.h"
 
 #ifdef MAC
 #import "CDXMacOSXSupport.h"
