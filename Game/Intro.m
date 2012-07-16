@@ -201,14 +201,20 @@
 	rect = CGRectMake(sw/4-32, sh/2-32, 64, 64);
 	if(CGRectContainsPoint(rect, location)) {
 		NSString *urlString = @"itms-apps://itunes.com/apps/iplayfulinc";
+    #if defined (__STELLA_VERSION_MAX_ALLOWED) /* OPENURL */
+    #else
 		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+    #endif
 	}
 	
 	// game sources button
 	rect = CGRectMake(sw*3/4-32, sh/2-32, 64, 64);
 	if(CGRectContainsPoint(rect, location)) {
 		NSString *urlString = @"https://github.com/haqu/climbers";
+    #if defined (__STELLA_VERSION_MAX_ALLOWED) /* OPENURL */
+    #else
 		[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+    #endif
 	}
 }
 
